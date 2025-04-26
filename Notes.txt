@@ -1,0 +1,13 @@
+Notes
+
+Strategy
+1. read each field one by one
+
+What are industries that you think this covers well, and industries that this covers poorly?
+
+1. Identify columns of interest
+Tenant SIC Description	STRING	The Standard Industry Classification System description for the NAICS code of the tenant company
+Tenant NAICS Description	STRING	The North American Industry Classification description for the NAICS code of the tenant company
+Proposed Use	STRING	The intended use for the property
+Property Type	STRING	The type of property where the tenant signed the lease (i.e. office, industrial, mixed-use, etc.)
+Space Type	STRING	The way in which the space is used (i.e. office, industrial, etc.)
