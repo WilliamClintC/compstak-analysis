@@ -1,0 +1,78 @@
+---
+title: "Compstak Analysis Update"
+date: today
+date-format: "DD MMMM, YYYY"
+lang: en-GB
+author: 
+  - William Co
+abstract: |
+abstractspacing: double
+keywords: Jupyter, \LaTeX, Pandoc, Python, Quarto
+jelcodes: A00, B11, C22
+appendix: false
+fontfamily: libertine
+monofont: inconsolata
+monofontoptions: scaled=.95
+fontsize: 12pt
+spacing: double
+geometry: 
+  - top=2cm
+  - bottom=2cm
+  - left=2cm
+  - right=2cm
+urlcolor: darkblue
+linkcolor: Mahogany
+citecolor: Mahogany
+jupyter: python3
+highlight-style: arrow
+pdf-engine: pdflatex
+format: 
+    pdf:
+      template: article-template.latex
+      toc: false
+      toc-depth: 3
+      number-sections: true
+      cite-method: natbib
+      biblio-style: apalike
+      bibliography: references.bib
+editor:
+  render-on-save: true
+---
+
+\newpage
+
+# Introduction {#sec-introduction}
+
+This is section [-@sec-introduction]. *Italics*, **bold**, and `typewriter`. Font awesome: {{< fa thumbs-up >}} {{< fa brands bluetooth >}}. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.[^1]
+
+[^1]: This is a footnote. You can use any name you want to refer to it. Here is another citation: @freire2018evaluating [10--15]. And this is a URL: <https://github.com/danilofreire/quarto-templates>.
+
+Aenean tortor lacus, pharetra vel posuere eget, gravida non lorem. Phasellus eros ante, dapibus tincidunt nisl eget, iaculis fermentum odio. Suspendisse vitae nunc ac mauris semper molestie. Donec aliquam tellus eros, non interdum eros iaculis ut. Phasellus nisl dui, aliquam ullamcorper ante non, hendrerit molestie risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan libero a purus sodales, eget vulputate orci pellentesque. Morbi sit amet tellus suscipit, gravida quam eget, mollis tortor. Etiam eu urna dictum, condimentum nunc ut, ullamcorper elit. This is a link to @tbl-markdown:
+
+| A            |        New        |         Table |
+|:-------------|:-----------------:|--------------:|
+| left-aligned |  centre-aligned   | right-aligned |
+| *italics*    | ~~strikethrough~~ |  **boldface** |
+
+: Your Caption {#tbl-markdown}
+
+You can also create your tables in Python using the [`tabulate`](https://pypi.org/project/tabulate/) package. @tbl-planets offers an example:
+
+A \LaTeX \hspace{.01cm} equation. Black-Scholes ([-@eq-black-scholes]) is a mathematical model used to price derivatives:
+
+$$
+\frac{\partial \mathrm C}{ \partial \mathrm t } + \frac{1}{2}\sigma^{2} \mathrm S^{2}
+\frac{\partial^{2} \mathrm C}{\partial \mathrm C^2}
+  + \mathrm r \mathrm S \frac{\partial \mathrm C}{\partial \mathrm S}\ =
+  \mathrm r \mathrm C 
+$$ {#eq-black-scholes}
+
+1.  ordered list
+2.  item 2
+    i)  sub-item 1
+        A.  sub-sub-item 1
+
+-   unordered list
+    -   sub-item 1
+
+For a demonstration of a line plot on a polar axis, see @fig-polar.

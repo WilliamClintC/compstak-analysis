@@ -1,0 +1,299 @@
+% !TEX program = XeLaTeX
+\documentclass[12pt,british,]{article}
+
+% Set up the page
+
+% Fonts
+\usepackage[mono=false]{libertine}
+
+% Undefine \Bbbk if it's already defined
+%\let\Bbbk\undefined
+
+% This is a nice mathfont, it fits well with Libertine
+% Comment the line if you want to use a different one
+\usepackage[libertine]{newtxmath}
+
+% Set up Inconsolata as the monofont
+\usepackage[scaled=.95]{inconsolata}
+
+% Font awesome
+\usepackage{fontawesome5}
+
+% Add the following packages to support kableExtra
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{etoolbox}
+\usepackage{tocloft}
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+
+% Dots in toc
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% Colours
+\usepackage[dvipsnames]{xcolor}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.55}
+
+% Spacing
+\usepackage{setspace}
+
+% Margin
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+
+% Packages I have been using for different reasons
+% \usepackage[backref,pagebackref]{hyperref}
+%\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{dcolumn}
+\usepackage{graphicx}
+\usepackage{float}
+\floatplacement{figure}{H}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Reduce font and spacing in Python chunks
+\usepackage{etoolbox} 
+\usepackage{setspace} 
+\AddToHook{env/Highlighting/begin}{\small} 
+\AddToHook{env/Highlighting/begin}{\singlespacing}
+
+% UK English
+%\usepackage[UKenglish]{babel}
+%\usepackage[UKenglish]{isodate}
+%\cleanlookdateon
+
+% Penalties
+\exhyphenpenalty=1000
+\hyphenpenalty=1000
+\widowpenalty=1000
+\clubpenalty=1000
+
+% Back references
+% \renewcommand*{\backref}[1]{}
+% \renewcommand*{\backrefalt}[4]{%
+    % \ifcase #1 (Not cited.)%
+    % \or        Cited on page~#2.%
+    % \else      Cited on pages~#2.%
+    % \fi}
+% \renewcommand{\backreftwosep}{ and~} 
+% \renewcommand{\backreflastsep}{ and~}
+
+% Hypersetup
+\hypersetup{
+  linkcolor=Mahogany,
+  citecolor=Mahogany,
+  urlcolor=darkblue, 
+  breaklinks=true, 
+  colorlinks=true,
+    pdftitle={Compstak Analysis Update},
+      pdfauthor={William Co},
+      pdfkeywords={Jupyter, \LaTeX, Pandoc, Python, Quarto},
+  }
+
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+
+% Language
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,main=british]{babel}
+\else
+  \usepackage{polyglossia}
+  \setmainlanguage[]{}
+\fi
+
+% Bibliography
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\makeatletter
+% Remove comma after author
+\setcitestyle{aysep={}}
+\patchcmd{\NAT@citex}
+	  {\@citea\NAT@hyper@{%
+		 \NAT@nmfmt{\NAT@nm}%
+		 \hyper@natlinkbreak{\NAT@aysep\NAT@spacechar}{\@citeb\@extra@b@citeb}%
+		 \NAT@date}}
+	  {\@citea\NAT@nmfmt{\NAT@nm}%
+	   \NAT@aysep\NAT@spacechar\NAT@hyper@{\NAT@date}}{}{}
+	\patchcmd{\NAT@citex}
+	  {\@citea\NAT@hyper@{%
+		 \NAT@nmfmt{\NAT@nm}%
+		 \hyper@natlinkbreak{\NAT@spacechar\NAT@@open\if*#1*\else#1\NAT@spacechar\fi}%
+		   {\@citeb\@extra@b@citeb}%
+		 \NAT@date}}
+	  {\@citea\NAT@nmfmt{\NAT@nm}%
+	   \NAT@spacechar\NAT@@open\if*#1*\else#1\NAT@spacechar\fi\NAT@hyper@{\NAT@date}}
+	  {}{}
+% Patch case where name and year are separated by aysep
+\patchcmd{\NAT@citex}
+  {\@citea\NAT@hyper@{%
+     \NAT@nmfmt{\NAT@nm}%
+     \hyper@natlinkbreak{\NAT@aysep\NAT@spacechar}{\@citeb\@extra@b@citeb}%
+     \NAT@date}}
+  {\@citea\NAT@nmfmt{\NAT@nm}%
+   \NAT@aysep\NAT@spacechar\NAT@hyper@{\NAT@date}}{}{}
+% Patch case where name and year are separated by opening bracket
+\patchcmd{\NAT@citex}
+  {\@citea\NAT@hyper@{%
+     \NAT@nmfmt{\NAT@nm}%
+     \hyper@natlinkbreak{\NAT@spacechar\NAT@@open\if*#1*\else#1\NAT@spacechar\fi}%
+       {\@citeb\@extra@b@citeb}%
+     \NAT@date}}
+  {\@citea\NAT@nmfmt{\NAT@nm}%
+   \NAT@spacechar\NAT@@open\if*#1*\else#1\NAT@spacechar\fi\NAT@hyper@{\NAT@date}}
+  {}{}
+\makeatother
+
+% Listings
+
+% Verbatim
+
+% Tables
+\usepackage{longtable,booktabs}
+
+% Spacing
+\doublespacing
+
+% Title
+\title{Compstak Analysis Update}
+
+% Author
+\author{William Co}
+
+% Date
+\date{25 April, 2025}
+
+% Tightlist
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Begin document
+\begin{document}
+\maketitle
+
+% Abstract
+
+% Change section numbers to letters if 
+% you want to use the template for appendices
+
+
+% Table of Contents
+\newpage
+
+\section{Introduction}\label{sec-introduction}
+
+This is section \ref{sec-introduction}. \emph{Italics}, \textbf{bold},
+and \texttt{typewriter}. Font awesome: \faIcon{thumbs-up}
+\faIcon{bluetooth}. Lorem ipsum dolor sit amet, consectetur adipiscing
+elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+qui officia deserunt mollit anim id est laborum.\footnote{This is a
+  footnote. You can use any name you want to refer to it. Here is
+  another citation: \citet[10--15]{freire2018evaluating}. And this is a
+  URL: \url{https://github.com/danilofreire/quarto-templates}.}
+
+Aenean tortor lacus, pharetra vel posuere eget, gravida non lorem.
+Phasellus eros ante, dapibus tincidunt nisl eget, iaculis fermentum
+odio. Suspendisse vitae nunc ac mauris semper molestie. Donec aliquam
+tellus eros, non interdum eros iaculis ut. Phasellus nisl dui, aliquam
+ullamcorper ante non, hendrerit molestie risus. Lorem ipsum dolor sit
+amet, consectetur adipiscing elit. Fusce accumsan libero a purus
+sodales, eget vulputate orci pellentesque. Morbi sit amet tellus
+suscipit, gravida quam eget, mollis tortor. Etiam eu urna dictum,
+condimentum nunc ut, ullamcorper elit. This is a link to
+Table~\ref{tbl-markdown}:
+
+\begin{longtable}[]{@{}lcr@{}}
+\caption{Your Caption}\label{tbl-markdown}\tabularnewline
+\toprule\noalign{}
+A & New & Table \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+A & New & Table \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+left-aligned & centre-aligned & right-aligned \\
+\emph{italics} & \st{strikethrough} & \textbf{boldface} \\
+\end{longtable}
+
+You can also create your tables in Python using the
+\href{https://pypi.org/project/tabulate/}{\texttt{tabulate}} package.
+\textbf{?@tbl-planets} offers an example:
+
+A \LaTeX \hspace{.01cm} equation. Black-Scholes (\ref{eq-black-scholes})
+is a mathematical model used to price derivatives:
+
+\begin{equation}\phantomsection\label{eq-black-scholes}{
+\frac{\partial \mathrm C}{ \partial \mathrm t } + \frac{1}{2}\sigma^{2} \mathrm S^{2}
+\frac{\partial^{2} \mathrm C}{\partial \mathrm C^2}
+  + \mathrm r \mathrm S \frac{\partial \mathrm C}{\partial \mathrm S}\ =
+  \mathrm r \mathrm C 
+}\end{equation}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ordered list
+\item
+  item 2
+
+  \begin{enumerate}
+  \def\labelenumii{\roman{enumii})}
+  \tightlist
+  \item
+    sub-item 1
+
+    \begin{enumerate}
+    \def\labelenumiii{\Alph{enumiii}.}
+    \tightlist
+    \item
+      sub-sub-item 1
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  unordered list
+
+  \begin{itemize}
+  \tightlist
+  \item
+    sub-item 1
+  \end{itemize}
+\end{itemize}
+
+For a demonstration of a line plot on a polar axis, see
+\textbf{?@fig-polar}.
+
+% More bibliography
+\bibliography{references.bib}
+
+\end{document}

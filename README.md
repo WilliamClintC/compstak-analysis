@@ -81,3 +81,4 @@ NaN values in 'reported_propertytype' column of doe_df: 0
 incosnsitent categories So i needed to make a callwhere each category falls
 
 https://www.costar.com/about/costar-glossary
+https://catalog.data.gov/dataset/city-and-county-commercial-building-inventories-010d2
