@@ -1,0 +1,106 @@
+---
+title: "Compstak Analysis Progress Part 2"
+format:
+  jasa-pdf:
+    keep-tex: true  
+    journal:
+      blinded: false
+  jasa-html: default
+date: last-modified
+author:
+  - name: William Clinton Co
+    affiliations:
+      - name: University of British Columbia
+        department: Department of Economics
+
+abstract: | 
+
+bibliography: bibliography.bib  
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+## Mapping DOE to Comsptak {#sec-intro}
+
+|  |  |  |  |  |
+|----|----|----|----|----|
+|  |  |  |  |  |
+|  | **DOE Category** |  | **Mapped Compstak Category** |  |
+|  |  |  |  |  |
+|  | Industrial |  | Industrial |  |
+|  |  |  |  |  |
+|  | Multi-Family |  | Multi-Family |  |
+|  |  |  |  |  |
+|  | Office |  | Office |  |
+|  |  |  |  |  |
+|  | Retail |  | Retail |  |
+|  |  |  |  |  |
+|  | General Retail |  | Retail |  |
+|  |  |  |  |  |
+|  | Flex |  | Industrial / Retail / Other |  |
+|  |  |  |  |  |
+|  | Health Care |  | Other / Hotel |  |
+|  |  |  |  |  |
+|  | Hospitality |  | Hotel |  |
+|  |  |  |  |  |
+|  | Specialty |  | Industrial / Retail / Other / Hotel / Multi-Family |  |
+|  |  |  |  |  |
+|  | Sports & Entertainment |  | Hotel / Other |  |
+|  |  |  |  |  |
+|  | Unknown |  | Other |  |
+|  |  |  |  |  |
+
+|  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|
+|  |  |  |  |  |  |  |
+|  | **DOE Property Type** |  | **DOE Subtype (if applicable)** |  | **Mapped Compstak Property Type** |  |
+|  |  |  |  |  |  |  |
+|  | **Industrial** |  | *(All)* |  | Industrial |  |
+|  |  |  |  |  |  |  |
+|  | **Multi-Family** |  | *(All)* |  | Multi-Family |  |
+|  |  |  |  |  |  |  |
+|  | **Office** |  | *(All)* |  | Office |  |
+|  |  |  |  |  |  |  |
+|  | **Retail** |  | *(All)* |  | Retail |  |
+|  |  |  |  |  |  |  |
+|  | **General Retail** |  | *(All)* |  | Retail |  |
+|  |  |  |  |  |  |  |
+|  | **Flex** |  | Light Distribution, Light Manufacturing |  | Industrial |  |
+|  |  |  |  |  |  |  |
+|  |  |  | R&D |  | Industrial or Office (context-dependent; default to Industrial) |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Showroom |  | Retail |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Telecom Hotel / Data Hosting |  | Other |  |
+|  |  |  |  |  |  |  |
+|  | **Health Care** |  | Assisted Living, Congregate Senior Housing |  | Other |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Continuing Care Retirement Community |  | Other |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Hospital |  | Hotel (if treated as hospitality) |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Rehabilitation Center, Skilled Nursing Facility |  | Other |  |
+|  |  |  |  |  |  |  |
+|  | **Hospitality** |  | *(All)* |  | Hotel |  |
+|  |  |  |  |  |  |  |
+|  | **Specialty** |  | Car Wash |  | Retail |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Cement/Gravel Plant, Chemical/Oil Refinery |  | Industrial |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Contractor Storage Yard, Recycling Center, Shipyard |  | Industrial |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Residential Income |  | Multi-Family |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Lodge / Meeting Hall, Casino |  | Hotel |  |
+|  |  |  |  |  |  |  |
+|  |  |  | All other Specialty subtypes (e.g. post office, cemetery, utility substation) |  | Other |  |
+|  |  |  |  |  |  |  |
+|  | **Sports & Entertainment** |  | Casino |  | Hotel |  |
+|  |  |  |  |  |  |  |
+|  |  |  | Theater/Concert Hall |  | Other |  |
+|  |  |  |  |  |  |  |
+|  |  |  | All other (e.g. amusement park, baseball field, skating rink) |  | Other |  |
+|  |  |  |  |  |  |  |
+|  | **Unknown** |  | *(All)* |  | Other |  |
+|  |  |  |  |  |  |  |
