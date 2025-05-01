@@ -146,7 +146,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Compstak Analysis Progress},
+  pdftitle={Compstak Analysis Progress Part 1},
   pdfauthor={William Clinton Co},
   colorlinks=true,
   linkcolor={blue},
@@ -165,8 +165,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\date{April 27, 2025}
-\title{\bf Compstak Analysis Progress}
+\date{April 30, 2025}
+\title{\bf Compstak Analysis Progress Part 1}
 \author{
 William Clinton Co\\
 Department of Economics, University of British Columbia\\
@@ -176,30 +176,20 @@ Department of Economics, University of British Columbia\\
 \bigskip
 \bigskip
 \begin{abstract}
-In this project, we conducted an initial review of the CompStak dataset
-to assess its suitability for analyzing commercial properties in the
-United States. Each field was individually evaluated, with a focus on
-`Property Type' and `Property Subtype'. Our analysis revealed that while
-fill rates for `Property Type' are high (95--99\%), `Property Subtype'
-fields exhibit higher missingness (up to 28\%), potentially complicating
-downstream analysis.We verified that property IDs are generally stable
-across time and regions, although inconsistencies in property type and
-subtype classifications were noted in a small fraction of records
-(\textless0.02\%). To benchmark the dataset's coverage, we compared the
-number of properties captured in CompStak against external (unverified)
-estimates of U.S. commercial properties. Our findings indicate
-non-uniform coverage across property types and states. Specifically,
-industrial, office, and retail sectors are relatively well-represented,
-whereas sectors like land and multifamily properties show significant
-undercoverage. Geographically, West Coast states such as California show
-higher representation, and regression analysis suggests that coverage
-rates increase with the number of commercial properties in a given
-state, indicating increasing returns to scale in data collection.
-Challenges remain, particularly in mapping category definitions across
-different datasets, such as the DOE and CoStar sources. Future work will
-focus on improving benchmark estimates using the DOE dataset and
-establishing a reliable mapping of property categories between datasets
-to ensure meaningful comparisons.
+We conducted an initial review of the CompStak dataset to evaluate its
+suitability for analyzing U.S. commercial properties. Key fields,
+especially `Property Type' and `Property Subtype', were assessed.
+`Property Type' showed high completeness (95--99\%), while `Property
+Subtype' had up to 28\% missingness, which may hinder analysis. Property
+IDs were largely stable over time and regions, with minimal
+classification inconsistencies (\textless0.02\%). Benchmarking against
+external estimates revealed uneven coverage across property types and
+states---industrial, office, and retail were well-covered, while land
+and multifamily were underrepresented. West Coast states had higher
+representation, and regression analysis indicated better coverage in
+states with more commercial properties. Future work will improve
+benchmarking using DOE data and align property classifications across
+datasets.
 \end{abstract}
 
 
@@ -278,10 +268,10 @@ sub type. Wherein the Nan values for property sub types can be as high
 as 28\% of the data. See Table~\ref{tbl-two}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2192}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \caption{Error Associated with Property
 Types}\label{tbl-two}\tabularnewline
 \toprule\noalign{}
@@ -476,6 +466,85 @@ CompStak glossary that is directly comparable to the
 \href{https://www.costar.com/about/costar-glossary}{CoStar Glossary}.
 
 \section{Appendix}\label{appendix}
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{DOE Mapping}\label{tbl-Mapping}\tabularnewline
+\toprule\noalign{}
+Property Type & Subtype & Standardized Category \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Property Type & Subtype & Standardized Category \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Industrial & All & Industrial \\
+Multi-Family & All & Multi-Family \\
+Office & All & Office \\
+Retail & All & Retail \\
+General Retail & All & Retail \\
+Hospitality & All & Hotel \\
+Flex & Light Distribution & Industrial \\
+Flex & Light Manufacturing & Industrial \\
+Flex & R\&D & Industrial \\
+Flex & Showroom & Retail \\
+Flex & Telecom Hotel/Data Hosting & Other \\
+Flex & All Others & Industrial \\
+Health Care & Assisted Living & Other \\
+Health Care & Congregate Senior Housing & Other \\
+Health Care & Continuing Care Retirement Community & Other \\
+Health Care & Hospital & Hotel \\
+Health Care & Rehabilitation Center & Other \\
+Health Care & Skilled Nursing Facility & Other \\
+Specialty & Airplane Hangar & Other \\
+Specialty & Airport & Other \\
+Specialty & Auto Salvage Facility & Other \\
+Specialty & Car Wash & Retail \\
+Specialty & Cement/Gravel Plant & Industrial \\
+Specialty & Cemetery/Mausoleum & Other \\
+Specialty & Chemical/Oil Refinery & Industrial \\
+Specialty & Contractor Storage Yard & Industrial \\
+Specialty & Correctional Facility & Other \\
+Specialty & Drive-in Movie & Other \\
+Specialty & Landfill & Other \\
+Specialty & Lodge/Meeting Hall & Hotel \\
+Specialty & Lumberyard & Industrial \\
+Specialty & Marina & Other \\
+Specialty & Movie/Radio/TV Studio & Other \\
+Specialty & Parking Garage & Other \\
+Specialty & Parking Lot & Other \\
+Specialty & Police/Fire Station & Other \\
+Specialty & Post Office & Other \\
+Specialty & Public Library & Other \\
+Specialty & Radio/TV Transmission Facilities & Other \\
+Specialty & Railroad Yard & Industrial \\
+Specialty & Recycling Center & Industrial \\
+Specialty & Religious Facility & Other \\
+Specialty & Residential Income & Multi-Family \\
+Specialty & Schools & Other \\
+Specialty & Self-Storage & Other \\
+Specialty & Shelter & Other \\
+Specialty & Shipyard & Industrial \\
+Specialty & Sorority/Fraternity House & Other \\
+Specialty & Trailer/Camper Park & Other \\
+Specialty & Utility Sub-Station & Other \\
+Specialty & Water Retention Facility & Other \\
+Specialty & Water Treatment Facility & Other \\
+Specialty & Winery/Vineyard & Other \\
+Specialty & All Others & Other \\
+Sports \& Entertainment & Amusement Park & Other \\
+Sports \& Entertainment & Baseball Field & Other \\
+Sports \& Entertainment & Casino & Hotel \\
+Sports \& Entertainment & Golf Course/Driving Range & Other \\
+Sports \& Entertainment & Horse Stables & Other \\
+Sports \& Entertainment & Race Track & Other \\
+Sports \& Entertainment & Skating Rink & Other \\
+Sports \& Entertainment & Swimming Pool & Other \\
+Sports \& Entertainment & Theater/Concert Hall & Other \\
+Sports \& Entertainment & All Others & Other \\
+Unknown & All & Other \\
+\end{longtable}
 
 \begin{figure}
 

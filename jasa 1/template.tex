@@ -146,7 +146,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Compstak Analysis Progress},
+  pdftitle={Compstak Analysis Progress: Part 2},
   pdfauthor={William Clinton Co},
   colorlinks=true,
   linkcolor={blue},
@@ -165,8 +165,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\date{April 27, 2025}
-\title{\bf Compstak Analysis Progress}
+\date{April 30, 2025}
+\title{\bf Compstak Analysis Progress: Part 2}
 \author{
 William Clinton Co\\
 Department of Economics, University of British Columbia\\
@@ -176,30 +176,17 @@ Department of Economics, University of British Columbia\\
 \bigskip
 \bigskip
 \begin{abstract}
-In this project, we conducted an initial review of the CompStak dataset
-to assess its suitability for analyzing commercial properties in the
-United States. Each field was individually evaluated, with a focus on
-`Property Type' and `Property Subtype'. Our analysis revealed that while
-fill rates for `Property Type' are high (95--99\%), `Property Subtype'
-fields exhibit higher missingness (up to 28\%), potentially complicating
-downstream analysis.We verified that property IDs are generally stable
-across time and regions, although inconsistencies in property type and
-subtype classifications were noted in a small fraction of records
-(\textless0.02\%). To benchmark the dataset's coverage, we compared the
-number of properties captured in CompStak against external (unverified)
-estimates of U.S. commercial properties. Our findings indicate
-non-uniform coverage across property types and states. Specifically,
-industrial, office, and retail sectors are relatively well-represented,
-whereas sectors like land and multifamily properties show significant
-undercoverage. Geographically, West Coast states such as California show
-higher representation, and regression analysis suggests that coverage
-rates increase with the number of commercial properties in a given
-state, indicating increasing returns to scale in data collection.
-Challenges remain, particularly in mapping category definitions across
-different datasets, such as the DOE and CoStar sources. Future work will
-focus on improving benchmark estimates using the DOE dataset and
-establishing a reliable mapping of property categories between datasets
-to ensure meaningful comparisons.
+This is a continuation of Part 1. Reading part 1 is unecessary and this
+document is structured to read part 2 as a stand alone version.This
+paper analyzes the CompStak commercial property dataset, focusing on
+classification consistency and geographic coverage. While `Property
+Type' and `Property Subtype' are generally populated, subtype fields are
+missing in 28\% of records and show some inconsistence. Property IDs are
+stable, allowing reliable property counts. By mapping CompStak to DOE
+building categories, we estimate 35\% national coverage. However,
+representation is uneven, with strong western and large-market bias.
+These findings highlight classification challenges and non-uniform
+geographic coverage.
 \end{abstract}
 
 
@@ -278,10 +265,10 @@ sub type. Wherein the Nan values for property sub types can be as high
 as 28\% of the data. See Table~\ref{tbl-two}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2192}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
 \caption{Error Associated with Property
 Types}\label{tbl-two}\tabularnewline
 \toprule\noalign{}
@@ -337,69 +324,129 @@ example, are retail properties in California more likely to be reported
 than warehouses in Michigan?
 
 To begin, we pull external estimates of the total number of commercial
-properties from publicly available internet sources. Although these
-external figures are unverified, they provide a useful starting point
-for benchmarking and analyzing the coverage of our data set. See
-Table~\ref{tbl-Industry} and Table~\ref{tbl-State}
+properties from
+\href{https://catalog.data.gov/dataset/city-and-county-commercial-building-inventories-010d2}{DOE
+Dataset}. Although these external figures are not entirely accurate,
+they provide a useful starting point for benchmarking and analyzing the
+coverage of our data set.
+
+\section{Methodology}\label{methodology}
+
+They key to this analysis is matching the different category structure
+that exists within the DOE data set and the Compstak data set.
+
+First we discuss the categories in the DOE dataset. There are direct
+matches. For example ``industrial'' appears as a category in both data
+sets. At the same time there are ambiguous data sets such as
+``speciality'', which can take the form of a casino to a recycling
+center. In order to work around this we do the matching into two steps.
+The first step is the direct mapping, where categories with the same
+name are matched one for one. The second step is the ambiguous mapping,
+where categories are mapped based on their subcategory. To understand
+this approach, we note how the data set is structured. There is a main
+category type along with a sub type. The ambiguous mapping maps based on
+the subcategory, disregarding the main category. It is also to note that
+no entries or Nan entries are automatically assigned to ``others''
+category. This potentially overestimates our ``others'' category, as we
+see later on in Figure~\ref{fig-count} . The mapping can be found in
+Table~\ref{tbl-Mapping} .
+
+Finally, we discuss the categories in the Compstak dataset. Ideally, we
+would want to match the DOE categories exactly to the Compstak
+categories. The reason being that DOE has 11 categories and Compstak has
+8 categories ( Table~\ref{tbl-Category_Compare}) . Unfortunately, the
+Compstak categories also contains ambiguous definitions that are
+unattributable to the DOE categories, namely ``Mixed-Use'' and ``Land''.
+We create mappings to address this by using their respective
+subcategories (Table~\ref{tbl-Category_Mapping}).
+
+As a result we end up with 6 categories (Hotel, Industrial,
+Multi-Family, Office, Other, Retail).
 
 \section{Results}\label{results}
 
-The following analysis uses unverified U.S. figures. We observe evidence
-of non-uniform coverage. If we assume the complete circle represents the
-true total number of U.S. commercial properties, then the CompStak data
-represents a subsample of this total. The ``Covered'' section reflects
-properties captured in the CompStak dataset, while the ``Gap''
-represents the ``missing'' properties not covered.
-
-As shown in Figure~\ref{fig-sunburst1} , office, industrial, and retail
-sectors appear relatively well covered. Industrial coverage is
-approximately 53\%, while office and retail each have around 22\%
-coverage. Coverage for the remaining sectors is negligible, with less
-than 5\% represented.
+We first look at Figure~\ref{fig-count} We see that the scales of the
+categories are mostly consistent in both of the datasets. Furthermore,
+we see the overestimation bias we have with ``other'' category. Beyond
+that our results suggest consistency within the Compstak data set.
 
 \begin{figure}
 
 \centering{
 
-\includegraphics{images/filtered_coverage_sunburst_20250424_234213.png}
+\includegraphics{images/clipboard-46274019.png}
 
 }
 
-\caption{\label{fig-sunburst1}}
+\caption{\label{fig-count}}
 
 \end{figure}%
 
-In particular see Figure~\ref{fig-sunburst2} see that land and
-multi-family have extremely low coverage, at the same time representing
-a large portion of total US commercial properties.
+Next we look into the percentages of the DOE vs Compstak data set. We
+expect that the percentage of each category with respect to the total of
+each data set should be consistent. It is to note we remove ``other''
+category due to overestimation. We see that the pie chart is mostly
+consistent with the DOE, suggesting valid consistent data.
+Figure~\ref{fig-pie}
 
 \begin{figure}
 
 \centering{
 
-\includegraphics{images/complete_coverage_sunburst_20250425_110035.jpg}
+\includegraphics{images/donut_comparison_no_other_20250430_180249.png}
 
 }
 
-\caption{\label{fig-sunburst2}}
+\caption{\label{fig-pie}}
 
 \end{figure}%
 
-Using the same data set, I investigated the uniformity of coverage
-across states. The analysis reveals that the CompStak dataset exhibits a
-bias toward West Coast states. As shown in Figure~\ref{fig-map}, the
-coverage rate is calculated by assuming the externally sourced U.S. data
-set estimate provides the true number of commercial properties, with the
-CompStak dataset representing a subset. For example, California has an
-18\% coverage rate, meaning that the number of commercial property
-observations in CompStak accounts for 18\% of the estimated 917,860
-commercial properties in California.
+Assuming DOE dataset, contains the total commercial property in the us.
+We create a variable called coverage rate, which is the number of
+commercial properties of Compstak divided by the DOE data set. From this
+we observe a few things, ``other'' category is once again an outlier.
+Aside from this, we see that all other categories have decent coverage
+rates Figure~\ref{fig-coverage} Figure~\ref{fig-coverage_pie} .
 
 \begin{figure}
 
 \centering{
 
-\includegraphics{images/coverage_percentage_redblue_20250425_010815.jpg}
+\includegraphics{images/2.png}
+
+}
+
+\caption{\label{fig-coverage}}
+
+\end{figure}%
+
+We also see decently overall coverage rate of almost 35\% (assuming DOE
+is the total).
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{images/3.png}
+
+}
+
+\caption{\label{fig-coverage_pie}}
+
+\end{figure}%
+
+In line with our coverage rate analysis, we now plot by state. We see a
+big western bias for west coast states. Red indicates a high coverage.
+Figure~\ref{fig-map} . In theory, uniform coverage would imply a
+consistent number across all states. This suggest that our data is
+ununiform and biased to western states. CA covers as high as 70\%, this
+is in start difference to the 33\% aggregate coverage rate we saw prior.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{images/5.png}
 
 }
 
@@ -407,187 +454,260 @@ commercial properties in California.
 
 \end{figure}%
 
-Next, we examine the determinants of this observation. Specifically, I
-assess whether the coverage rate is a function of the total number of
-commercial properties in each state, again assuming that our U.S.
-estimate represents the true total. As shown in Figure~\ref{fig-prop1},
-there is evidence to support this theory. States with a greater number
-of commercial properties tend to have higher coverage rates in the
-CompStak dataset, as indicated by the linear regression results in
-Figure~\ref{fig-prop1}. This pattern suggests that there are fixed costs
-associated with data collection in each location, and that data
-providers are more likely to specialize in areas with larger commercial
-markets. As a result, the dataset exhibits increasing returns to scale,
-which introduces bias into our observations.
+We have now establish a western bias to coverage rates. But now we also
+investigate weather the number of properties within the state is also a
+variable to understand coverage rates As shown in
+Figure~\ref{fig-regress} , there is evidence to support this theory.
+States with a greater number of commercial properties tend to have
+higher coverage rates. This pattern may be explained that there are
+fixed costs associated with data collection in each location, and that
+data providers are more likely to specialize in areas with larger
+commercial markets. As a result, the data set exhibits increasing
+returns to scale, which introduces bias into our observations.
 
 \begin{figure}
 
 \centering{
 
-\includegraphics{images/7.png}
+\includegraphics{images/6.png}
 
 }
 
-\caption{\label{fig-prop1}}
+\caption{\label{fig-regress}}
 
 \end{figure}%
 
-A similar analysis was conducted using property types, but several
-challenges were encountered. Specifically, the top two outliers
-significantly skewed the regression line, suggesting potential issues
-with category interpretation or data quality. Further investigation is
-warranted to better understand these anomalies. However, it is
-noteworthy that when these outliers are excluded, the regression line
-again shows a positive relationship: property types with more commercial
-properties tend to have higher CompStak coverage rates. The
-corresponding graph can be found in the appendix. Figure~\ref{fig-prop2}
-Figure~\ref{fig-prop3}
+Next, we use both state and categorization to produce a visualization.
+Figure~\ref{fig-heatmap} . From this we see that ``others'' category is
+introducing bias into our data set. Therefore, we remove ``others''
+category for our next visualization.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{images/7-01.png}
+
+}
+
+\caption{\label{fig-heatmap}}
+
+\end{figure}%
+
+Figure~\ref{fig-heatmap_fix} .The unevenness of the data set is clearly
+illustrated in this visualization. Notably, the industrial and
+multifamily categories in Nevada, California, and Arizona show
+consistently higher coverage rates compared to other regions.
+Additionally, New York exhibits particularly high coverage for office
+properties relative to its industrial sector, which is an interesting
+deviation. These patterns further support the theory of increasing
+returns to scale in data collection. states with larger commercial
+property markets tend to have better data set representation.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{images/8-01.png}
+
+}
+
+\caption{\label{fig-heatmap_fix}}
+
+\end{figure}%
 
 \section{Concluding Thoughts}\label{concluding-thoughts}
 
-NAICS and SIC codes may be worth considering, given their standardized
-format and consistency across multiple datasets, depending on our
-analytical needs. We also realized that our observations may be biased
-due to unverified numbers in our current data set. Therefore, to ensure
-greater accuracy, we will be studying the DOE dataset of estimated
-numbers of commercial properties in the United States
-(\href{https://www.costar.com/about/costar-glossary}{CoStar Glossary},
-\href{https://catalog.data.gov/dataset/city-and-county-commercial-building-inventories-010d2}{DOE
-Dataset}).
+Clustering the categories into smaller subset of types will be difficult
+to accomplish. The Compstak data set has a high Nan rate and does not
+suggest a compeltely consistent categorization methodology. There is no
+industry dictionary glossary to reference (unlike DOE,
+\href{https://www.costar.com/about/costar-glossary}{CoStar Glossary}).
+With this said, It is best to stick to higher order property types,
+which is prone to less errors. It may also be worthwhile to use
+standardized property codes, which is available in the data dictionary
+given, but is a ``premium add on''. The Compstak data set covers
+industries reasonably but the geography coverage seems to be western and
+size biased.
 
-While this is a good starting point, it will require significant effort
-to reliably reproduce our unverified US estimate data using the DOE
-dataset. Determining the appropriate mapping and definitions takes time.
-For example, the DOE categorizes commercial properties under terms such
-as ``sports and entertainment'' or ``specialty,'' which may not directly
-correspond to the categories used in the CompStak dataset. The
-\href{https://www.costar.com/about/costar-glossary}{CoStar Glossary}
-provides definitions for some of these categories, and a comparison with
-Table~\ref{tbl-Industry} in our dataset highlights these differences.
-This underscores the need for careful mapping and interpretation when
-aligning categories across datasets.
-
-A careful review of category definitions and thoughtful value judgments
-will be necessary to establish equivalencies and ensure meaningful
-comparisons in our analysis. Additionally, it would be beneficial to
-determine whether a comprehensive glossary of categories exists for the
-CompStak dataset. To the best of my knowledge, there is currently no
-CompStak glossary that is directly comparable to the
-\href{https://www.costar.com/about/costar-glossary}{CoStar Glossary}.
+Next steps, will now be working on producing the data set with the
+following fields Lat/lon , State, ZCTA, Type of business
 
 \section{Appendix}\label{appendix}
 
-\begin{figure}
-
-\centering{
-
-\includegraphics{images/8.png}
-
-}
-
-\caption{\label{fig-prop2}}
-
-\end{figure}%
-
-\begin{figure}
-
-\centering{
-
-\includegraphics{images/9.png}
-
-}
-
-\caption{\label{fig-prop3}}
-
-\end{figure}%
-
 \begin{longtable}[]{@{}ll@{}}
-\caption{Number of Commercial Properties by Industry (Unverified
-Internet Sourced US estimates)}\label{tbl-Industry}\tabularnewline
+\caption{Land and Mixed-Use (Compstak)
+Mapping}\label{tbl-Category_Mapping}\tabularnewline
 \toprule\noalign{}
-Property Type & Estimated Number of Properties \\
+Property Type & DOE Category \\
 \midrule\noalign{}
 \endfirsthead
 \toprule\noalign{}
-Property Type & Estimated Number of Properties \\
+Property Type & DOE Category \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Retail & 1,070,000 \\
-Industrial & 350,000 \\
-Office & 569,311 \\
-Multi-Family & 5,200,000 \\
-Hotel & 116,873 \\
-Mixed-Use & 580,000 \\
-Land & 13,100,000 \\
-Other & Not specified \\
+Street Retail/Storefront & Retail \\
+General Retail & Retail \\
+Super-Regional Center/Mall & Retail \\
+Shopping Centers & Retail \\
+Neighborhood Shopping Center & Retail \\
+Convenience/Strip Center & Retail \\
+Community Shopping Center & Retail \\
+Department Store & Retail \\
+Restaurant/Bar & Retail \\
+Fuel \& Service Station & Retail \\
+Freestanding & Retail \\
+Automotive & Retail \\
+Outlet & Retail \\
+Drive Thru & Retail \\
+Warehouse/Distribution & Industrial \\
+Light Industrial & Industrial \\
+Heavy Industrial & Industrial \\
+Refrigerated/Cold Storage & Industrial \\
+Manufacturing & Industrial \\
+Special Industrial & Industrial \\
+Industrial Outdoor Storage & Industrial \\
+Flex/R\&D & Industrial \\
+Processing & Industrial \\
+Life Science/Lab & Industrial \\
+Business Park & Office \\
+Professional Building & Office \\
+Financial Building & Office \\
+Bank & Office \\
+Creative & Office \\
+Apartments & Multi-Family \\
+Student Housing & Multi-Family \\
+Mobile Home Park & Multi-Family \\
+Condominium & Multi-Family \\
+Senior Housing & Multi-Family \\
+Housing & Multi-Family \\
+Hospitality Related & Hotel \\
+Self-Storage & Other \\
+Vacant Land & Other \\
+Mixed-Use & Other \\
+Medical/Healthcare & Other \\
+Hospital/Healthcare Facility & Other \\
+Day Care Facility & Other \\
+Parking & Other \\
+Funeral/Mortuary & Other \\
+Communication/Data Center & Other \\
+Assembly/Meeting Place & Other \\
+Municipality/Public Service & Other \\
+Educational/School & Other \\
+Community/Recreation Center & Other \\
+Sports \& Recreation & Other \\
+Transportation & Other \\
+Special Purpose & Other \\
+Live/Work & Other \\
+Under Construction & Other \\
 \end{longtable}
 
 \begin{longtable}[]{@{}ll@{}}
-\caption{Number of Commercial Properties by State (Unverified Internet
-Sourced US estimates)}\label{tbl-State}\tabularnewline
+\caption{Categories within DOE and
+Compstak}\label{tbl-Category_Compare}\tabularnewline
 \toprule\noalign{}
-State & Commercial Properties \\
+Compstak Property Types (8 total) & DOE Property Types (11 total) \\
 \midrule\noalign{}
 \endfirsthead
 \toprule\noalign{}
-State & Commercial Properties \\
+Compstak Property Types (8 total) & DOE Property Types (11 total) \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-CA & 917,860 \\
-TX & 733,648 \\
-FL & 735,652 \\
-NY & 536,608 \\
-IL & 519,616 \\
-PA & 438,648 \\
-OH & 407,557 \\
-GA & 444,143 \\
-NC & 313,187 \\
-MI & 369,983 \\
-WA & 246,208 \\
-AZ & 272,797 \\
-MA & 371,710 \\
-VA & 267,936 \\
-CO & 224,418 \\
-IN & 428,138 \\
-TN & 270,544 \\
-MO & 192,733 \\
-WI & 190,274 \\
-MN & 160,773 \\
-AL & 323,716 \\
-SC & 189,736 \\
-KY & 76,415 \\
-OR & 145,157 \\
-OK & 144,752 \\
-CT & 138,387 \\
-IA & 81,338 \\
-MS & 131,969 \\
-AR & 122,634 \\
-KS & 90,904 \\
-NV & 113,336 \\
-UT & 102,769 \\
-NM & 57,693 \\
-NE & 55,961 \\
-WV & 54,143 \\
-ID & 41,460 \\
-HI & 26,275 \\
-ME & 73,831 \\
-NH & 60,537 \\
-RI & 48,317 \\
-MT & 43,219 \\
-DE & 36,816 \\
-SD & 34,215 \\
-ND & 32,846 \\
-AK & 22,410 \\
-VT & 21,740 \\
-WY & 20,549 \\
-DC & 35,878 \\
+Hotel & Flex \\
+Industrial & General Retail \\
+Land & Health Care \\
+Mixed-Use & Hospitality \\
+Multi-Family & Industrial \\
+Office & Multi-Family \\
+Other & Office \\
+Retail & Retail \\
+& Specialty \\
+& Sports \& Entertainment \\
+& Unknown \\
 \end{longtable}
 
-\section{}\label{section}
+\begin{longtable}[]{@{}lll@{}}
+\caption{DOE Mapping}\label{tbl-Mapping}\tabularnewline
+\toprule\noalign{}
+Property Type & Subtype & Standardized Category \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Property Type & Subtype & Standardized Category \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Industrial & All & Industrial \\
+Multi-Family & All & Multi-Family \\
+Office & All & Office \\
+Retail & All & Retail \\
+General Retail & All & Retail \\
+Hospitality & All & Hotel \\
+Flex & Light Distribution & Industrial \\
+Flex & Light Manufacturing & Industrial \\
+Flex & R\&D & Industrial \\
+Flex & Showroom & Retail \\
+Flex & Telecom Hotel/Data Hosting & Other \\
+Flex & All Others & Industrial \\
+Health Care & Assisted Living & Other \\
+Health Care & Congregate Senior Housing & Other \\
+Health Care & Continuing Care Retirement Community & Other \\
+Health Care & Hospital & Hotel \\
+Health Care & Rehabilitation Center & Other \\
+Health Care & Skilled Nursing Facility & Other \\
+Specialty & Airplane Hangar & Other \\
+Specialty & Airport & Other \\
+Specialty & Auto Salvage Facility & Other \\
+Specialty & Car Wash & Retail \\
+Specialty & Cement/Gravel Plant & Industrial \\
+Specialty & Cemetery/Mausoleum & Other \\
+Specialty & Chemical/Oil Refinery & Industrial \\
+Specialty & Contractor Storage Yard & Industrial \\
+Specialty & Correctional Facility & Other \\
+Specialty & Drive-in Movie & Other \\
+Specialty & Landfill & Other \\
+Specialty & Lodge/Meeting Hall & Hotel \\
+Specialty & Lumberyard & Industrial \\
+Specialty & Marina & Other \\
+Specialty & Movie/Radio/TV Studio & Other \\
+Specialty & Parking Garage & Other \\
+Specialty & Parking Lot & Other \\
+Specialty & Police/Fire Station & Other \\
+Specialty & Post Office & Other \\
+Specialty & Public Library & Other \\
+Specialty & Radio/TV Transmission Facilities & Other \\
+Specialty & Railroad Yard & Industrial \\
+Specialty & Recycling Center & Industrial \\
+Specialty & Religious Facility & Other \\
+Specialty & Residential Income & Multi-Family \\
+Specialty & Schools & Other \\
+Specialty & Self-Storage & Other \\
+Specialty & Shelter & Other \\
+Specialty & Shipyard & Industrial \\
+Specialty & Sorority/Fraternity House & Other \\
+Specialty & Trailer/Camper Park & Other \\
+Specialty & Utility Sub-Station & Other \\
+Specialty & Water Retention Facility & Other \\
+Specialty & Water Treatment Facility & Other \\
+Specialty & Winery/Vineyard & Other \\
+Specialty & All Others & Other \\
+Sports \& Entertainment & Amusement Park & Other \\
+Sports \& Entertainment & Baseball Field & Other \\
+Sports \& Entertainment & Casino & Hotel \\
+Sports \& Entertainment & Golf Course/Driving Range & Other \\
+Sports \& Entertainment & Horse Stables & Other \\
+Sports \& Entertainment & Race Track & Other \\
+Sports \& Entertainment & Skating Rink & Other \\
+Sports \& Entertainment & Swimming Pool & Other \\
+Sports \& Entertainment & Theater/Concert Hall & Other \\
+Sports \& Entertainment & All Others & Other \\
+Unknown & All & Other \\
+\end{longtable}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1831}}
